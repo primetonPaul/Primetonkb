@@ -1,0 +1,44 @@
+1.用with
+
+数据准备：
+create table testtable
+(
+	name varchar(12),
+	city varchar(12)
+);
+
+insert into testtable values('lee','bj'),('lucy','bj'),('lucy','zz'),('zhangsan','zz'),('zhangsan','bj'),('zhangsan','sh'),('lucy','sh');
+
+with 
+testtable_par(name,city,rk_num) as
+(
+	select name,city,row_number() over(partition by name) from testtable
+),
+city_join(name,city,r_num) as 
+(
+	select name,cast(city as varchar(100)),rk_num from testtable_par where rk_num = 1
+	union all
+	select a1.name,cast(a1,city||','||b.city as varchar(1000)),a1.r_num + 1 from city_join a1,testtable_par b1
+	where a1.name = b1.name and a1.r_num = b1.rk_num - 1
+)
+select a.name,a.city
+from city_join a
+inner join 
+(select name,max(r_num) r_num from city_join group by name) b
+on a.name = b.name
+and a.r_num = b.r_num;
+
+优缺点：使用比较常规，但是写起来比较繁琐，也不好理解。
+
+2.xml方法
+
+create table testtable2(
+a varchar(10),
+b varchar(10)
+);
+
+insert into testtable2 values('1','a'),('1','b'),('1','c'),('2','a'),('2','b'),('3','a');
+
+select A,replace(replace(xml2clob(xmlagg(xmlelement(name a,B||','))),'<A>',''),'</A>','') from testtable2 group by A;
+
+优缺点：理解容易，使用简单，但是数据库必须支持xml最后和java交互时需要考虑到clob类型的转换。

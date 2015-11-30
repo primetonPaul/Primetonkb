@@ -1,0 +1,10 @@
+ Primeton Portal 在 IBM HTTP Server7+WebSphere7中代理配置指南
+
+
+本文从 Primeton Portal 的配置集成出发，介绍 Primeton Portal 在 AIX 环境下，与 IBM HTTP Server7 + WebSphere 7 的相关配置过程。
+此文档中不会包含有Primeton Portal 安装配置的过程信息，如有需要，请请参考 《Portal_7.0 集成指南》。
+与单点登录相关的内容请参考《SSO 集成指南》 文档。
+
+本文用于解决 Primeton Portal 安装在 AIX + IBM HTTP Server7 + WebSphere7 中相关代理配置的说明，Primeton Portal 依赖的第三方模块(mod_substitute)在 IBM HTTP Server 中缺失的问题，并针对以上几个问题提供了解决办法。
+
+具体内容请参考附件中的《Primeton Portal 在 IBM HTTP Server7+WebSphere7中代理配置指南.pdf》及相关参考材料。
